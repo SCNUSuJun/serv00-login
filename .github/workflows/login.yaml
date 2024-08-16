@@ -3,10 +3,11 @@ name: Run Login Script
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */12 * * *"  # 每半天运行一次，可以根据需求调整时间
+    - cron: "0 */6 * * *"  # 每6小时运行一次
   push:
     branches:
       - main
+
 jobs:
   login:
     runs-on: ubuntu-latest
@@ -37,4 +38,6 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           ACCOUNTS_JSON: ${{ secrets.ACCOUNTS_JSON }}
         run: |
+          # 设置随机延迟，最多延迟一个小时
+          sleep $((RANDOM % 3600))
           python login_script.py
